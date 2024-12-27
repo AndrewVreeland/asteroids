@@ -3,6 +3,10 @@ from constants import *
 from player import Player
 
 def main():
+    
+    updatable = pygame.sprite.Group()
+    drawable  = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
 
     dt = 0
     x = SCREEN_WIDTH / 2
@@ -30,7 +34,13 @@ def main():
         screen.fill((0, 0, 0,1))
     
         # Update player
-        player.update(dt)
+        # player.update(dt)
+        for object in updatable:
+            object.update(dt)
+        
+        for object in drawable:
+            object.update(dt)
+            
         player.draw(screen)
     
         # Update display
