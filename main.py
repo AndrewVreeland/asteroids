@@ -39,9 +39,7 @@ def main():
             object.update(dt)
         
         for object in drawable:
-            object.update(dt)
-            
-        player.draw(screen)
+            object.draw(screen)
     
         # Update display
         pygame.display.flip()
