@@ -35,6 +35,11 @@ class AsteroidField(pygame.sprite.Sprite):
     def spawn(self, radius, position, velocity):
         asteroid = Asteroid(position.x, position.y, radius)
         asteroid.velocity = velocity
+        # Adds asteroid to the container groups
+        if hasattr(asteroid, 'add'):
+            asteroid.add(self.containers)
+        else:
+            raise AttributeError("Asteroid class does not have 'add' method")
 
     def update(self, dt):
         self.spawn_timer += dt
@@ -49,3 +54,4 @@ class AsteroidField(pygame.sprite.Sprite):
             position = edge[1](random.uniform(0, 1))
             kind = random.randint(1, ASTEROID_KINDS)
             self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+            print(f"Asteroid spawned at {position} and added to group.")
