@@ -5,10 +5,14 @@ from circleshape import CircleShape
 from constants import ASTEROID_MIN_RADIUS
 from constants import ASTEROID_MAX_RADIUS
 from score import Score
+from gamemanager import GameManager
 
 class Asteroid(CircleShape):
-    def __init__(self, x, y, radius):
+    def __init__(self, x, y, radius, game_manager):
         super().__init__(x, y, radius)
+        self.game_manager = game_manager
+        self.spawn_time = 2  # Half a second before wrapping starts
+        self.can_wrap = False
 
     
     
@@ -17,6 +21,16 @@ class Asteroid(CircleShape):
 
     def update(self, dt):
         self.position += ((self.velocity * dt))
+
+        # Wrap around screen edges
+        if self.spawn_time > 0:
+            self.spawn_time -= dt
+            if self.spawn_time <= 0:
+                self.can_wrap = True
+        
+        # Only wrap if we're past the spawn time
+        if self.can_wrap:
+            self.position = self.game_manager.wrap_position(self.position)
     
     def split(self):
 
@@ -34,10 +48,10 @@ class Asteroid(CircleShape):
 
             new_rad = self.radius - ASTEROID_MIN_RADIUS 
 
-            asteroid1 = Asteroid(self.position.x, self.position.y, new_rad)
+            asteroid1 = Asteroid(self.position.x, self.position.y, new_rad, self.game_manager)
             asteroid1.velocity = angle_1 * 1.2
 
-            asteroid2 = Asteroid(self.position.x, self.position.y, new_rad)
+            asteroid2 = Asteroid(self.position.x, self.position.y, new_rad, self.game_manager)
             asteroid2.velocity = angle_2 * 1.2 
             
             

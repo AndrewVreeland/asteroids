@@ -56,27 +56,13 @@ class Player(CircleShape):
 
 
         # Wrap around screen edges
-        self.wrap_position()
+        self.position = self.game_manager.wrap_position(self.position)
 
             # manage timer
         if self.reload_timer > 0:
             self.reload_timer -= dt
             
 
-    def wrap_position(self):
-        screen_width, screen_height = self.game_manager.get_screen_dimensions()
-    
-        # Wrap horizontally
-        if self.position.x < 0:
-            self.position.x = screen_width
-        elif self.position.x > screen_width:
-            self.position.x = 0
-        
-        # Wrap vertically    
-        if self.position.y < 0:
-            self.position.y = screen_height
-        elif self.position.y > screen_height:
-            self.position.y = 0
 
     def accelerate(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -114,22 +100,33 @@ class Player(CircleShape):
     def shoot(self):
         if self.reload_timer <= 0:
 
-            bullet = Shot(self.position.x, self.position.y)
+            bullet = Shot(self.position.x, self.position.y, self.game_manager)
             direction = pygame.Vector2(0,1).rotate(self.rotation)
             bullet.velocity = direction * PLAYER_SHOOT_SPEED
             self.reload_timer = PLAYER_SHOOT_COOLDOWN
     
+    def is_in_buffer_zone(self):
+        buffer = 50  # Make sure this matches your GameManager's buffer
+        screen_width, screen_height = self.game_manager.get_screen_dimensions()
+
+        return (self.position.x < 0 or 
+                self.position.x > screen_width or 
+                self.position.y < 0 or 
+                self.position.y > screen_height)
 
     def lose_life(self, dt):
         
-        if self.life_timer > 0:
-            self.lives -= 1
-            self.life_timer -= dt
-            screen_width, screen_height = self.game_manager.get_screen_dimensions()
-            self.position.xy = screen_width / 2, screen_height / 2
-            self.game_manager.clear_asteroids()
-        elif self.life_timer <= 0:
-            self.life_timer == 10
+        # Only lose life if not in buffer zone
+        if not self.is_in_buffer_zone():
+            if self.life_timer > 0:
+                self.lives -= 1
+                self.life_timer -= dt
+                screen_width, screen_height = self.game_manager.get_screen_dimensions()
+                self.position.xy = screen_width / 2, screen_height / 2
+                self.game_manager.clear_asteroids()
+            elif self.life_timer <= 0:
+                self.life_timer = 5
+
         print(self.lives)
         if self.lives <= 0:
             print("Game over!")

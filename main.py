@@ -39,7 +39,7 @@ def main():
     #instansiations
     game_manager = GameManager(SCREEN_WIDTH, SCREEN_HEIGHT, asteroid_group)
     player = Player(x,y, game_manager)
-    asteroid_field = AsteroidField()
+    asteroid_field = AsteroidField(game_manager)
     score_display = Score()
     
 
