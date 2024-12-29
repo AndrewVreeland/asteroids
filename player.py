@@ -54,11 +54,29 @@ class Player(CircleShape):
         # Update position using velocity
         self.position += self.velocity * dt
 
+
+        # Wrap around screen edges
+        self.wrap_position()
+
             # manage timer
         if self.reload_timer > 0:
             self.reload_timer -= dt
             
 
+    def wrap_position(self):
+        screen_width, screen_height = self.game_manager.get_screen_dimensions()
+    
+        # Wrap horizontally
+        if self.position.x < 0:
+            self.position.x = screen_width
+        elif self.position.x > screen_width:
+            self.position.x = 0
+        
+        # Wrap vertically    
+        if self.position.y < 0:
+            self.position.y = screen_height
+        elif self.position.y > screen_height:
+            self.position.y = 0
 
     def accelerate(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
