@@ -7,7 +7,7 @@ from shot import Shot
 
 class Player(CircleShape):
 
-    def __init__(self, x, y, game_manager):
+    def __init__(self, x, y, game_manager, audio_manager):
         super().__init__(x,y,PLAYER_RADIUS)
 
         # Load and set up the image
@@ -23,6 +23,7 @@ class Player(CircleShape):
         self.life_timer = 10
         self.lives = 3
         self.game_manager = game_manager
+        self.audio_manager = audio_manager
         self.velocity = pygame.Vector2(0, 0)
         
     
@@ -115,6 +116,8 @@ class Player(CircleShape):
             direction = pygame.Vector2(0,1).rotate(self.rotation)
             bullet.velocity = direction * PLAYER_SHOOT_SPEED
             self.reload_timer = PLAYER_SHOOT_COOLDOWN
+            self.audio_manager.play_sound('shoot')
+
     
     def is_in_buffer_zone(self):
         buffer = 50  # Make sure this matches your GameManager's buffer

@@ -10,7 +10,7 @@ from shot import Shot
 from score import Score
 from gamemanager import GameManager
 from background import Background
-
+from audiomanager import AudioManager
 
 def main():
 
@@ -40,11 +40,11 @@ def main():
 
     #instansiations
     game_manager = GameManager(SCREEN_WIDTH, SCREEN_HEIGHT, asteroid_group)
-    player = Player(x,y, game_manager)
+    audio_manager = AudioManager()
+    player = Player(x,y, game_manager, audio_manager)
     asteroid_field = AsteroidField(game_manager)
     score_display = Score()
     background = Background(SCREEN_WIDTH, SCREEN_HEIGHT)
-    
 
     print("Starting asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
