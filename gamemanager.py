@@ -7,6 +7,9 @@ class GameManager:
         self.asteroids = asteroids_group
         # can also track other game elements like score, lives, etc.
 
+        # Add the asteroid images loading here
+        self.asteroid_images = self.load_asteroid_images("assets/asteroid_sheet.png", num_rows=2, num_cols=4)
+
     def get_screen_dimensions(self):
         return self.screen_width, self.screen_height
     
@@ -37,3 +40,21 @@ class GameManager:
             wrapped_y = -buffer
         
         return pygame.Vector2(wrapped_x, wrapped_y)
+    
+    def load_asteroid_images(self, sprite_sheet_path, num_rows, num_cols):
+        sheet = pygame.image.load(sprite_sheet_path).convert_alpha()
+        
+        asteroid_width = 232
+        asteroid_height = 212
+        
+        asteroid_images = []
+        
+        for row in range(num_rows):
+            for col in range(num_cols):
+                x = col * asteroid_width
+                y = row * asteroid_height
+                rect = pygame.Rect(x, y, asteroid_width, asteroid_height)
+                image = sheet.subsurface(rect)
+                asteroid_images.append(image)
+                
+        return asteroid_images

@@ -14,10 +14,21 @@ class Asteroid(CircleShape):
         self.spawn_time = 2  # Half a second before wrapping starts
         self.can_wrap = False
 
+        # Load and scale the image
+        self.image = random.choice(self.game_manager.asteroid_images)
+        self.image = pygame.transform.scale(self.image, (int(radius * 2), int(radius * 2)))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+        
+
+
     
     
     def draw(self, screen):
-        pygame.draw.circle(screen, (255, 255, 255, 1), self.position, self.radius,2)
+        # Update the rect position to match the asteroid's position
+        self.rect.center = (int(self.position.x), int(self.position.y))
+        # Draw the sprite instead of a circle
+        screen.blit(self.image, self.rect)
 
     def update(self, dt):
         self.position += ((self.velocity * dt))

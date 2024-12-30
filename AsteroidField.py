@@ -34,7 +34,8 @@ class AsteroidField(pygame.sprite.Sprite):
         self.game_manager = game_manager
 
     def spawn(self, radius, position, velocity):
-        asteroid = Asteroid(position.x, position.y, radius, self.game_manager)
+        x, y = position
+        asteroid = Asteroid(x, y, radius, self.game_manager)
         asteroid.velocity = velocity
         # Adds asteroid to the container groups
         if hasattr(asteroid, 'add'):
