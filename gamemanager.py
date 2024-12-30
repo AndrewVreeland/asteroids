@@ -2,8 +2,13 @@ import pygame
 
 class GameManager:
     def __init__(self, screen_width, screen_height, asteroids_group):
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        pygame.init()
+        self.SCREEN_WIDTH = screen_width
+        self.SCREEN_HEIGHT = screen_height
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT), pygame.FULLSCREEN)
+
+        screen_info = pygame.display.Info()
+        
         self.asteroids = asteroids_group
         # can also track other game elements like score, lives, etc.
 
@@ -58,3 +63,9 @@ class GameManager:
                 asteroid_images.append(image)
                 
         return asteroid_images
+    
+    def get_screen_dimensions(self):
+        return self.SCREEN_WIDTH, self.SCREEN_HEIGHT
+
+    def get_screen(self):
+        return self.screen

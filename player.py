@@ -25,6 +25,10 @@ class Player(CircleShape):
         self.game_manager = game_manager
         self.audio_manager = audio_manager
         self.velocity = pygame.Vector2(0, 0)
+
+        self.game_manager = game_manager
+        screen_width = self.game_manager.SCREEN_WIDTH
+        screen_height = self.game_manager.SCREEN_HEIGHT
         
     
     def draw(self, screen):

@@ -14,7 +14,7 @@ from audiomanager import AudioManager
 
 def main():
 
-    pygame.init()
+    
     pygame.font.init()
 
     #sprite groups
@@ -29,26 +29,31 @@ def main():
     AsteroidField.containers = (updatable,)
     Shot.containers = (updatable, drawable, shots)
 
-    # delta time and player position
-    dt = 0
-    x = SCREEN_WIDTH / 2
-    y = SCREEN_HEIGHT / 2
-
     #clock and game screen
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    screen_width = screen.get_width()
+    screen_height = screen.get_height()
+    
     clock = pygame.time.Clock()
 
+    # game_manager instansiation
+    game_manager = GameManager(screen_width, screen_height, asteroid_group,)
+
+    # delta time and player position
+    dt = 0
+    x = game_manager.SCREEN_WIDTH / 2
+    y = game_manager.SCREEN_HEIGHT / 2
+
     #instansiations
-    game_manager = GameManager(SCREEN_WIDTH, SCREEN_HEIGHT, asteroid_group)
     audio_manager = AudioManager()
     player = Player(x,y, game_manager, audio_manager)
     asteroid_field = AsteroidField(game_manager)
     score_display = Score()
-    background = Background(SCREEN_WIDTH, SCREEN_HEIGHT)
+    background = Background(game_manager.SCREEN_WIDTH, game_manager.SCREEN_HEIGHT)
 
-    print("Starting asteroids!")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
+
+
+
 
     # game loop
     running = True
