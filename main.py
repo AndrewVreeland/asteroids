@@ -79,6 +79,7 @@ def main():
                     object.split()
                     bullet.kill()
                     score_display.add_to_score()
+                    audio_manager.play_explosion()
 
         for object in asteroid_group:
             if object.collision_check(player) == True:

@@ -25,10 +25,6 @@ class Player(CircleShape):
         self.game_manager = game_manager
         self.audio_manager = audio_manager
         self.velocity = pygame.Vector2(0, 0)
-
-        self.game_manager = game_manager
-        screen_width = self.game_manager.SCREEN_WIDTH
-        screen_height = self.game_manager.SCREEN_HEIGHT
         
     
     def draw(self, screen):
@@ -136,6 +132,8 @@ class Player(CircleShape):
         
         # Only lose life if not in buffer zone
         if not self.is_in_buffer_zone():
+            self.audio_manager.play_sound('explosion_1')
+
             if self.life_timer > 0:
                 self.lives -= 1
                 self.life_timer -= dt
