@@ -4,7 +4,7 @@ from asteroid import Asteroid
 from constants import *
 
 
-class AsteroidField(pygame.sprite.Sprite):
+class AsteroidField():
     edges = [
         [
             pygame.Vector2(1, 0),
@@ -25,7 +25,7 @@ class AsteroidField(pygame.sprite.Sprite):
     ]
 
     def __init__(self, game_manager):
-        pygame.sprite.Sprite.__init__(self, self.containers)
+        pygame.sprite.Sprite.__init__(self)
         self.spawn_timer = 0.0
         self.game_manager = game_manager
 
@@ -34,13 +34,15 @@ class AsteroidField(pygame.sprite.Sprite):
         asteroid = Asteroid(x, y, radius, self.game_manager)
         asteroid.velocity = velocity
         # Adds asteroid to the container groups
-        if hasattr(asteroid, 'add'):
-            asteroid.add(self.containers)
-        else:
-            raise AttributeError("Asteroid class does not have 'add' method")
-
+        self.game_manager.updatable.add(asteroid)
+        self.game_manager.drawable.add(asteroid)
+        self.game_manager.asteroids.add(asteroid)
     def update(self, dt):
+
+
         self.spawn_timer += dt
+        
+        # controls spawn rate
         if self.spawn_timer > ASTEROID_SPAWN_RATE:
             self.spawn_timer = 0
 

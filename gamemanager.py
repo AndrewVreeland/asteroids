@@ -6,10 +6,10 @@ from score import Score
 from audiomanager import AudioManager
 from button import Button
 from player import Player
+from AsteroidField import *
 
 class GameManager:
     def __init__(self, screen_width, screen_height, asteroids_group):
-        # No need for pygame.init() here since it's in main.py now
         
         # Screen setup
         self.SCREEN_WIDTH = screen_width
@@ -20,6 +20,7 @@ class GameManager:
         self.game_state = "MENU"
         self.font = pygame.font.Font(None, 74)
         self.title = self.font.render('ASTEROIDS', True, (255, 255, 255))
+
         self.play_button = Button(
             screen_width/2 - 100, 
             screen_height/2 - 50, 
@@ -45,6 +46,7 @@ class GameManager:
 
         # Game objects
         self.initialize_game_objects()
+
     def initialize_game_objects(self):
         # Initialize background
         self.background = Background(self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
@@ -67,6 +69,10 @@ class GameManager:
         self.updatable.add(self.player)
         self.drawable.add(self.player)
 
+        print("Number of updatable sprites:", len(self.updatable))
+        print("Number of drawable sprites:", len(self.drawable))
+        print("Number of asteroids:", len(self.asteroids))
+
         # Initialize sprite groups (though you already have these in __init__)
         self.updatable = pygame.sprite.Group()
         self.drawable = pygame.sprite.Group()
@@ -74,23 +80,31 @@ class GameManager:
         # Load asteroid images
         self.asteroid_images = self.load_asteroid_images("assets/asteroid_sheet.png", num_rows=2, num_cols=4)
 
+        # Create asteroid field
+        self.asteroid_field = AsteroidField(self)
+
     def load_asteroid_images(self, path, num_rows, num_cols):
         # Load and split asteroid sprite sheet
         sprite_sheet = pygame.image.load(path).convert_alpha()
-        sprite_width = sprite_sheet.get_width() // num_cols
-        sprite_height = sprite_sheet.get_height() // num_rows
+
+        asteroid_width = 232
+        asteroid_height = 212
         
         images = []
+
         for row in range(num_rows):
             for col in range(num_cols):
-                x = col * sprite_width
-                y = row * sprite_height
-                surface = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
-                surface.blit(sprite_sheet, (0, 0), (x, y, sprite_width, sprite_height))
+                x = col * asteroid_width
+                y = row * asteroid_height
+                surface = pygame.Surface((asteroid_width, asteroid_height), pygame.SRCALPHA)
+                surface.blit(sprite_sheet, (0, 0), (x, y, asteroid_width, asteroid_height))
                 images.append(surface)
         return images
     
     def update(self, dt):
+
+        self.asteroid_field.update(dt)
+        
         if self.game_state == "MENU":
             # Handle menu interactions
             mouse_pos = pygame.mouse.get_pos()

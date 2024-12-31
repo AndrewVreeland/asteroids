@@ -5,7 +5,7 @@ from circleshape import CircleShape
 from constants import ASTEROID_MIN_RADIUS
 from constants import ASTEROID_MAX_RADIUS
 from score import Score
-from gamemanager import GameManager
+
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius, game_manager):
