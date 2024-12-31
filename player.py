@@ -115,6 +115,7 @@ class Player(CircleShape):
             bullet = Shot(self.position.x, self.position.y, self.game_manager)
             direction = pygame.Vector2(0,1).rotate(self.rotation)
             bullet.velocity = direction * PLAYER_SHOOT_SPEED
+            self.game_manager.add_shot(bullet)
             self.reload_timer = PLAYER_SHOOT_COOLDOWN
             self.audio_manager.play_sound('shoot')
 

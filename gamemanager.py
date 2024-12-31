@@ -133,6 +133,12 @@ class GameManager:
             for asteroid in self.asteroids:
                 if asteroid.collision_check(self.player):
                     self.player.lose_life(dt)
+            
+            # Update shots
+            for shot in self.shots:
+                if (shot.position.x < 0 or shot.position.x > self.SCREEN_WIDTH or 
+                    shot.position.y < 0 or shot.position.y > self.SCREEN_HEIGHT):
+                    shot.kill()
     
     def draw(self, screen):
         if self.game_state == "MENU":
@@ -204,3 +210,8 @@ class GameManager:
     
     def get_screen_dimensions(self):
         return self.SCREEN_WIDTH, self.SCREEN_HEIGHT
+    
+    def add_shot(self, shot):
+        self.shots.add(shot)
+        self.updatable.add(shot)
+        self.drawable.add(shot)
