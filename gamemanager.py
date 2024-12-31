@@ -57,6 +57,9 @@ class GameManager:
         # Initialize audio manager
         self.audio_manager = AudioManager()
 
+        self.updatable = pygame.sprite.Group()
+        self.drawable = pygame.sprite.Group()
+
         # Initialize player at center of screen
         self.player = Player(
         self.SCREEN_WIDTH / 2,
@@ -72,10 +75,6 @@ class GameManager:
         print("Number of updatable sprites:", len(self.updatable))
         print("Number of drawable sprites:", len(self.drawable))
         print("Number of asteroids:", len(self.asteroids))
-
-        # Initialize sprite groups (though you already have these in __init__)
-        self.updatable = pygame.sprite.Group()
-        self.drawable = pygame.sprite.Group()
     
         # Load asteroid images
         self.asteroid_images = self.load_asteroid_images("assets/asteroid_sheet.png", num_rows=2, num_cols=4)
@@ -104,7 +103,7 @@ class GameManager:
     def update(self, dt):
 
         self.asteroid_field.update(dt)
-        
+
         if self.game_state == "MENU":
             # Handle menu interactions
             mouse_pos = pygame.mouse.get_pos()
