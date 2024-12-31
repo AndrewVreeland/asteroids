@@ -21,6 +21,11 @@ class GameManager:
         self.font = pygame.font.Font(None, 74)
         self.title = self.font.render('ASTEROIDS', True, (255, 255, 255))
 
+        # Initialize audio and start menu music
+        self.audio_manager = AudioManager()
+        self.audio_manager.load_music()
+        self.audio_manager.play_menu_music()
+
         self.play_button = Button(
             screen_width/2 - 100, 
             screen_height/2 - 50, 
@@ -46,6 +51,8 @@ class GameManager:
 
         # Game objects
         self.initialize_game_objects()
+
+
 
     def initialize_game_objects(self):
         # Initialize background
@@ -103,8 +110,9 @@ class GameManager:
     def update(self, dt):
 
         self.asteroid_field.update(dt)
-
+        
         if self.game_state == "MENU":
+
             # Handle menu interactions
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()[0]
@@ -141,6 +149,7 @@ class GameManager:
                     shot.kill()
     
     def draw(self, screen):
+
         if self.game_state == "MENU":
             # Draw menu
             screen.fill((0, 0, 0))  # Black background
@@ -162,11 +171,10 @@ class GameManager:
             
         # Update display
         pygame.display.flip()
+
     def clear_asteroids(self):
-        print(f"Asteroids before clear: {len(self.asteroids)}")
         for asteroid in self.asteroids.sprites():
             asteroid.kill()  
-        print(f"Asteroids before clear: {len(self.asteroids)}")
 
     def wrap_position(self, position):
         screen_width, screen_height = self.get_screen_dimensions()
@@ -215,3 +223,8 @@ class GameManager:
         self.shots.add(shot)
         self.updatable.add(shot)
         self.drawable.add(shot)
+
+    def add_asteroid(self, asteroid):
+        self.asteroids.add(asteroid)
+        self.updatable.add(asteroid)
+        self.drawable.add(asteroid)

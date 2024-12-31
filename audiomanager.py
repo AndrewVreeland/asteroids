@@ -21,6 +21,12 @@ class AudioManager:
         except Exception as e:
             print(f"Error loading sounds: {e}")
             self.sound_enabled = False
+    def load_music(self):
+        try:
+            pygame.mixer.music.load('assets/audio/menu_music.wav')  # Replace with your music file
+            pygame.mixer.music.set_volume(0.5)  # Adjust volume (0.0 to 1.0)
+        except Exception as e:
+            print(f"Error loading music: {e}")
 
     def play_sound(self, sound_name):
         if self.sound_enabled and sound_name in self.sounds:
@@ -31,3 +37,12 @@ class AudioManager:
         import random
         explosion_sound = random.choice([self.sounds['explosion_2'], self.sounds['explosion_2']])
         explosion_sound.play()
+
+    def play_menu_music(self):
+        if self.sound_enabled:
+            if not pygame.mixer.music.get_busy():  
+                pygame.mixer.music.play(-1)
+    
+    def stop_music(self):
+        if self.sound_enabled:
+            pygame.mixer.music.stop()

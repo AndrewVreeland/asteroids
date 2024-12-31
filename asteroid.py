@@ -61,9 +61,10 @@ class Asteroid(CircleShape):
 
             asteroid1 = Asteroid(self.position.x, self.position.y, new_rad, self.game_manager)
             asteroid1.velocity = angle_1 * 1.2
+            self.game_manager.add_asteroid(asteroid1)
 
             asteroid2 = Asteroid(self.position.x, self.position.y, new_rad, self.game_manager)
-            asteroid2.velocity = angle_2 * 1.2 
-            
+            asteroid2   .velocity = angle_2 * 1.2 
+            self.game_manager.add_asteroid(asteroid2)
             
 
