@@ -18,6 +18,7 @@ class AudioManager:
             self.sounds['shoot'] = pygame.mixer.Sound('assets/audio/shoot.mp3')
             self.sounds['explosion_2'] = pygame.mixer.Sound("assets/audio/explosion_2.mp3")
             self.sounds['explosion_2'] = pygame.mixer.Sound("assets/audio/explosion_2.mp3")
+            self.sounds['explosion_2'].set_volume(0.5)
             # self.sounds['game_over'] = pygame.mixer.Sound('assets/game_over.wav')
         except Exception as e:
             print(f"Error loading sounds: {e}")
