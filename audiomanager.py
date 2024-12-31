@@ -1,5 +1,7 @@
 import pygame
 
+from utils import resource_path
+
 class AudioManager:
     def __init__(self):
         self.sound_enabled = False
@@ -15,9 +17,8 @@ class AudioManager:
     def load_sounds(self):
         # Load all your sound effects here
         try:
-            self.sounds['shoot'] = pygame.mixer.Sound('assets/audio/shoot.mp3')
-            self.sounds['explosion_2'] = pygame.mixer.Sound("assets/audio/explosion_2.mp3")
-            self.sounds['explosion_2'] = pygame.mixer.Sound("assets/audio/explosion_2.mp3")
+            self.sounds['shoot'] = pygame.mixer.Sound(resource_path('assets/audio/shoot.mp3'))
+            self.sounds['explosion_2'] = pygame.mixer.Sound(resource_path("assets/audio/explosion_2.mp3"))
             self.sounds['explosion_2'].set_volume(0.5)
             # self.sounds['game_over'] = pygame.mixer.Sound('assets/game_over.wav')
         except Exception as e:
@@ -25,7 +26,7 @@ class AudioManager:
             self.sound_enabled = False
     def load_music(self):
         try:
-            pygame.mixer.music.load('assets/audio/menu_music.mp3')  # Replace with your music file
+            pygame.mixer.music.load(resource_path('assets/audio/menu_music.mp3'))
             pygame.mixer.music.set_volume(0.3)  # Adjust volume (0.0 to 1.0)
         except Exception as e:
             print(f"Error loading music: {e}")

@@ -7,10 +7,13 @@ from audiomanager import AudioManager
 from button import Button
 from player import Player
 from AsteroidField import *
+from utils import resource_path
 
 class GameManager:
     def __init__(self, screen_width, screen_height, asteroids_group):
         
+        
+
         # Screen setup
         self.SCREEN_WIDTH = screen_width
         self.SCREEN_HEIGHT = screen_height
@@ -91,7 +94,7 @@ class GameManager:
 
     def load_asteroid_images(self, path, num_rows, num_cols):
         # Load and split asteroid sprite sheet
-        sprite_sheet = pygame.image.load(path).convert_alpha()
+        sprite_sheet = pygame.image.load(resource_path(path)).convert_alpha()
 
         asteroid_width = 232
         asteroid_height = 212

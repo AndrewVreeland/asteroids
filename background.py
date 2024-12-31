@@ -1,11 +1,13 @@
 import pygame
 
+from utils import resource_path
+
 class Background:
     def __init__(self, screen_width, screen_height):
         self.screen_width = screen_width
         self.screen_height = screen_height
         try:
-            self.image = pygame.image.load("assets/space-galaxy-background.jpg").convert()
+            self.image = pygame.image.load(resource_path("assets/space-galaxy-background.jpg")).convert()
             self.image = pygame.transform.scale(self.image, 
                 (self.screen_width, self.screen_height))
         except pygame.error as e:

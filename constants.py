@@ -13,8 +13,3 @@ PLAYER_SHOOT_SPEED = 500
 SHOT_RADIUS = 3
 PLAYER_SHOOT_COOLDOWN = 0.3
 
-ASTEROID_IMAGES = [
-    "assets/asteroid1.png",
-    "assets/asteroid2.png",
-    "assets/asteroid3.png"
-]
