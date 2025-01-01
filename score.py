@@ -13,3 +13,7 @@ class Score():
     def update_text(self):
         self.text = self.font.render(str(self.score), True, (255, 255, 255, 1))
     
+    def reset_score(self):
+        # Set the score to its initial value
+        self.score_value = 0
+        self.update_text()

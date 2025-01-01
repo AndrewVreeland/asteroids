@@ -3,6 +3,7 @@ import sys
 from circleshape import *
 from constants import *
 from shot import Shot
+from utils import resource_path
 
 
 class Player(CircleShape):
@@ -11,7 +12,7 @@ class Player(CircleShape):
         super().__init__(x,y,PLAYER_RADIUS)
 
         # Load and set up the image
-        self.original_image = pygame.image.load("assets/ship.png").convert_alpha()
+        self.original_image = pygame.image.load(resource_path("assets/ship.png")).convert_alpha()
         # Scale image to match your desired size
         self.original_image = pygame.transform.scale(self.original_image, (PLAYER_RADIUS * 2, PLAYER_RADIUS * 2))
         self.image = self.original_image
@@ -146,6 +147,28 @@ class Player(CircleShape):
 
         print(self.lives)
         if self.lives <= 0:
-            print("Game over!")
-            sys.exit()
+            self.notify_game_manager_game_over()
         
+    def notify_game_manager_game_over(self):
+        self.game_manager.player_lost = True
+    
+    def reset_position_and_lives(self):
+        # Reset the position to the center of the screen
+        screen_width, screen_height = self.game_manager.get_screen_dimensions()
+        self.position.xy = screen_width / 2, screen_height / 2
+        
+        # Reset the number of lives
+        self.lives = 3
+        
+        # Optionally reset timers and velocity
+        self.velocity = pygame.Vector2(0, 0)
+        self.rotation = 0.0
+        self.reload_timer = 0
+        self.life_timer = 10
+
+        # Update the player's rect to match the reset position
+        self.rect.center = self.position
+
+        # Optionally: you might want to clear current shots or play a sound
+        self.game_manager.clear_shots()
+        self.audio_manager.play_sound('reset')
