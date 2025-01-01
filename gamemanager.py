@@ -24,6 +24,7 @@ class GameManager:
         self.title = self.font.render('Space Shooter', True, (255, 255, 255))
         self.game_over_title = self.font.render('Game Over', True, (255, 255, 255))
         self.high_score = initialize_high_score()
+        self.score_checked = False
 
         # Initialize audio and start menu music
         self.audio_manager = AudioManager()
@@ -164,10 +165,14 @@ class GameManager:
                     shot.position.y < 0 or shot.position.y > self.SCREEN_HEIGHT):
                     shot.kill()
 
+            self.score_checked = False
+
         elif self.game_state == "GAMEOVER":
 
             # updating highscore
-            check_and_update_score(self.score_display.get_score())
+            if not self.score_checked:
+                check_and_update_score(self.score_display.get_score())
+                self.score_checked = True
 
             # Handle menu interactions
             mouse_pos = pygame.mouse.get_pos()
@@ -179,6 +184,7 @@ class GameManager:
                 self.game_state = "PLAYING"
             elif self.quit_button.is_clicked(mouse_pos, mouse_pressed):
                 self.audio_manager.play_click()
+
                 pygame.quit()
                 sys.exit()
             
