@@ -8,6 +8,7 @@ from button import Button
 from player import Player
 from AsteroidField import *
 from utils import resource_path
+from highscore_manager import initialize_high_score, read_high_score, check_and_update_score
 
 class GameManager:
     def __init__(self, screen_width, screen_height, asteroids_group):
@@ -22,6 +23,7 @@ class GameManager:
         self.font = pygame.font.Font(None, 74)
         self.title = self.font.render('Space Shooter', True, (255, 255, 255))
         self.game_over_title = self.font.render('Game Over', True, (255, 255, 255))
+        self.high_score = initialize_high_score()
 
         # Initialize audio and start menu music
         self.audio_manager = AudioManager()
@@ -162,6 +164,9 @@ class GameManager:
 
         elif self.game_state == "GAMEOVER":
 
+            # updating highscore
+            check_and_update_score(self.score_display.get_score())
+
             # Handle menu interactions
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()[0]
@@ -210,12 +215,10 @@ class GameManager:
             you_lose_text = self.font.render('You Lose', True, (255, 255, 255))
             you_lose_x = self.SCREEN_WIDTH/2 - you_lose_text.get_width()/2
             screen.blit(you_lose_text, (you_lose_x, 300))
-            
-            # Draw buttons
-            self.play_again_button.draw(screen)
-            self.quit_button.draw(screen)
 
-                    
+            high_score_text = self.font.render(f'High Score: {read_high_score()}', True, (255, 255, 255))
+            high_score_x = self.SCREEN_WIDTH/2 - high_score_text.get_width()/2
+            screen.blit(high_score_text, (high_score_x, 350))
 
 
 

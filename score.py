@@ -17,3 +17,6 @@ class Score():
         # Set the score to its initial value
         self.score_value = 0
         self.update_text()
+
+    def get_score(self):
+        return self.score
