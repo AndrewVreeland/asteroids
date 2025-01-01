@@ -152,7 +152,7 @@ class GameManager:
             
             # Check asteroid collisions with player
             for asteroid in self.asteroids:
-                if asteroid.collision_check(self.player):
+                if asteroid.collision_check(self.player) and not self.player.is_player_invulnerable():
                     self.player.lose_life(dt)
                     
             
@@ -193,9 +193,16 @@ class GameManager:
             # Draw background
             self.background.draw(screen)
             
-            # Draw all game objects
-            for object in self.drawable:
-                object.draw(screen)
+            # Draw shots first
+            for shot in self.shots:
+                shot.draw(screen)
+
+            # Draw asteroids
+            for asteroid in self.asteroids:
+                asteroid.draw(screen)
+
+            # Draw player last so it appears on top
+            self.player.draw(screen)
         
             # Draw the player's lives
             self.player.lives_manager.draw(screen)
@@ -224,6 +231,7 @@ class GameManager:
             high_score_text = self.font.render(f'High Score: {read_high_score()}', True, (255, 255, 255))
             high_score_x = self.SCREEN_WIDTH/2 - high_score_text.get_width()/2
             screen.blit(high_score_text, (high_score_x, 400))
+
 
 
 

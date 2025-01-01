@@ -1,4 +1,3 @@
-import sys
 
 from circleshape import *
 from constants import *
@@ -21,20 +20,31 @@ class Player(CircleShape):
         self.screen_width, self.screen_height = game_manager.get_screen_dimensions()
         self.lives_manager = Lives(3, self.screen_width)
         self.reload_timer = 0
-        self.life_timer = 10
         self.rotation = 0.0
         self.game_manager = game_manager
         self.audio_manager = audio_manager
         self.velocity = pygame.Vector2(0, 0)
+        self.is_invulnerable = False
+        self.invulnerable_timer = 0
+        self.invulnerable_duration = 2  
+        self.flash_interval = 0.2
+        self.is_visible = True
+        self.alpha = 255
         
     
     def draw(self, screen):
+        if self.is_invulnerable:
+            self.alpha = 128 if not self.is_visible else 255
+        else:
+            self.alpha = 255
+
+        # Apply the alpha to the rotated image
         angle = round(-self.rotation + 180)
-        # Rotate image
-        self.image = pygame.transform.rotate(self.original_image, angle)  # Negative for clockwise rotation
-        # Update rect center to match position
+        self.image = pygame.transform.rotate(self.original_image, angle)
+        self.image.set_alpha(self.alpha)
+        
+        # Update rect and draw
         self.rect = self.image.get_rect(center=self.position)
-        # Draw the rotated image
         screen.blit(self.image, self.rect)
 
     def rotate(self, dt):
@@ -67,6 +77,16 @@ class Player(CircleShape):
         # Update position using velocity
         self.position += self.velocity * dt
 
+        if self.is_invulnerable:
+            self.invulnerable_timer -= dt
+
+            # Flash effect
+            self.is_visible = int(self.invulnerable_timer / self.flash_interval) % 2 == 0
+
+            
+        if self.invulnerable_timer <= 0:
+            self.is_invulnerable = False
+            self.is_visible = True
 
         # Wrap around screen edges
         self.position = self.game_manager.wrap_position(self.position)
@@ -129,19 +149,20 @@ class Player(CircleShape):
                 self.position.y > self.screen_height)
 
     def lose_life(self, dt):
-        
-        # Only lose life if not in buffer zone
+
         if not self.is_in_buffer_zone():
-            self.audio_manager.play_sound('explosion_1')
-            self.lives_manager.lose_life()
-
-            if self.life_timer > 0:
-                self.life_timer -= dt
+            if not self.is_invulnerable:
+                self.audio_manager.play_sound('explosion_1')
+                self.lives_manager.lose_life()
+                # First reset position
                 self.position.xy = self.screen_width / 2, self.screen_height / 2
-
-        print(self.lives_manager.lives)
-        if self.lives_manager.lives <= 0:
-            self.notify_game_manager_game_over()
+                # Then set up invulnerability
+                self.velocity = pygame.Vector2(0, 0)  # Reset velocity too
+                self.is_invulnerable = True
+                self.invulnerable_timer = self.invulnerable_duration
+                self.is_visible = True  # Make sure player is visible initially
+            if self.lives_manager.lives <= 0:
+                self.notify_game_manager_game_over()
         
     def notify_game_manager_game_over(self):
         self.game_manager.player_lost = True
@@ -157,7 +178,6 @@ class Player(CircleShape):
         self.velocity = pygame.Vector2(0, 0)
         self.rotation = 0.0
         self.reload_timer = 0
-        self.life_timer = 10
 
         # Update the player's rect to match the reset position
         self.rect.center = self.position
@@ -165,3 +185,6 @@ class Player(CircleShape):
         # Optionally: you might want to clear current shots or play a sound
         self.game_manager.clear_shots()
         self.audio_manager.play_sound('reset')
+        
+    def is_player_invulnerable(self):
+        return self.is_invulnerable
