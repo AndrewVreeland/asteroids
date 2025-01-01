@@ -131,8 +131,10 @@ class GameManager:
             mouse_pressed = pygame.mouse.get_pressed()[0]
             
             if self.play_button.is_clicked(mouse_pos, mouse_pressed):
+                self.audio_manager.play_click()
                 self.game_state = "PLAYING"
             elif self.quit_button.is_clicked(mouse_pos, mouse_pressed):
+                self.audio_manager.play_click()
                 pygame.quit()
                 sys.exit()
                 
@@ -172,9 +174,11 @@ class GameManager:
             mouse_pressed = pygame.mouse.get_pressed()[0]
             
             if self.play_again_button.is_clicked(mouse_pos, mouse_pressed):
+                self.audio_manager.play_click()
                 self.reset_game()
                 self.game_state = "PLAYING"
             elif self.quit_button.is_clicked(mouse_pos, mouse_pressed):
+                self.audio_manager.play_click()
                 pygame.quit()
                 sys.exit()
             

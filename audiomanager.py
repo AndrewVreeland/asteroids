@@ -20,6 +20,7 @@ class AudioManager:
             self.sounds['shoot'] = pygame.mixer.Sound(resource_path('assets/audio/shoot.mp3'))
             self.sounds['explosion_2'] = pygame.mixer.Sound(resource_path("assets/audio/explosion_2.mp3"))
             self.sounds['explosion_2'].set_volume(0.5)
+            self.sounds['click'] = pygame.mixer.Sound(resource_path('assets/audio/click.mp3'))
             # self.sounds['game_over'] = pygame.mixer.Sound('assets/game_over.wav')
         except Exception as e:
             print(f"Error loading sounds: {e}")
@@ -41,9 +42,12 @@ class AudioManager:
         explosion_sound = random.choice([self.sounds['explosion_2'], self.sounds['explosion_2']])
         explosion_sound.play()
 
+    def play_click(self):
+        if self.sound_enabled:
+            self.play_sound('click')
+
     def play_menu_music(self):
         if self.sound_enabled and not pygame.mixer.music.get_busy():  
-                pygame.time.wait(100)
                 pygame.mixer.music.play(-1)
     
     def stop_music(self):
