@@ -2,6 +2,7 @@ import pygame
 
 class Lives:
     def __init__(self, initial_lives, screen_width):
+        self.initial_lives = initial_lives
         self.lives = initial_lives
         self.font = pygame.font.Font(None, 36)
         self.screen_width = screen_width
@@ -18,3 +19,6 @@ class Lives:
 
     def is_game_over(self):
         return self.lives <= 0
+    
+    def reset_lives(self):
+        self.lives = self.initial_lives

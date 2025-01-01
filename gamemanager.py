@@ -90,10 +90,6 @@ class GameManager:
         # Add player to sprite groups
         self.updatable.add(self.player)
         self.drawable.add(self.player)
-
-        print("Number of updatable sprites:", len(self.updatable))
-        print("Number of drawable sprites:", len(self.drawable))
-        print("Number of asteroids:", len(self.asteroids))
     
         # Load asteroid images
         self.asteroid_images = self.load_asteroid_images(resource_path("assets/asteroid_sheet.png"), num_rows=2, num_cols=4)
@@ -171,6 +167,7 @@ class GameManager:
             mouse_pressed = pygame.mouse.get_pressed()[0]
             
             if self.play_again_button.is_clicked(mouse_pos, mouse_pressed):
+                self.reset_game()
                 self.game_state = "PLAYING"
             elif self.quit_button.is_clicked(mouse_pos, mouse_pressed):
                 pygame.quit()
@@ -217,16 +214,6 @@ class GameManager:
             # Draw buttons
             self.play_again_button.draw(screen)
             self.quit_button.draw(screen)
-
-            # Handle menu interactions
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_pressed = pygame.mouse.get_pressed()[0]
-    
-        if self.play_again_button.is_clicked(mouse_pos, mouse_pressed):
-            self.reset_game()  # Here you reset the game
-        elif self.quit_button.is_clicked(mouse_pos, mouse_pressed):
-            pygame.quit()
-            sys.exit()
 
                     
 

@@ -4,7 +4,7 @@ from circleshape import *
 from constants import *
 from shot import Shot
 from utils import resource_path
-from lives import Lives
+from lives_manager import Lives
 
 class Player(CircleShape):
 
@@ -139,8 +139,8 @@ class Player(CircleShape):
                 self.life_timer -= dt
                 self.position.xy = self.screen_width / 2, self.screen_height / 2
 
-        print(self.lives)
-        if self.lives <= 0:
+        print(self.lives_manager.lives)
+        if self.lives_manager.lives <= 0:
             self.notify_game_manager_game_over()
         
     def notify_game_manager_game_over(self):
@@ -151,7 +151,7 @@ class Player(CircleShape):
         self.position.xy = self.screen_width / 2, self.screen_height / 2
         
         # Reset the number of lives
-        self.lives = 3
+        self.lives_manager.reset_lives()
         
         # Optionally reset timers and velocity
         self.velocity = pygame.Vector2(0, 0)
