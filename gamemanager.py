@@ -243,10 +243,6 @@ class GameManager:
             screen.blit(high_score_text, (high_score_x, 400))
 
 
-
-
-
-            
         # Update display
         pygame.display.flip()
 
@@ -281,16 +277,36 @@ class GameManager:
         
         asteroid_width = 232
         asteroid_height = 212
-        
+
         asteroid_images = []
         
         for row in range(num_rows):
             for col in range(num_cols):
+                # Calculate position on sprite sheet
                 x = col * asteroid_width
                 y = row * asteroid_height
+                
+                # Create subsurface from sprite sheet
                 rect = pygame.Rect(x, y, asteroid_width, asteroid_height)
-                image = sheet.subsurface(rect)
-                asteroid_images.append(image)
+                temp_surface = sheet.subsurface(rect)
+                
+                # Get the actual bounds of the asteroid in this image
+                actual_bounds = temp_surface.get_bounding_rect()
+                
+                # Create a new square surface
+                size = max(actual_bounds.width, actual_bounds.height)
+                centered_surface = pygame.Surface((size, size), pygame.SRCALPHA)
+                
+                # Calculate position to center the asteroid
+                center_x = (size - actual_bounds.width) // 2
+                center_y = (size - actual_bounds.height) // 2
+                
+                # Blit the cropped asteroid onto the centered surface
+                centered_surface.blit(temp_surface, 
+                                    (center_x, center_y), 
+                                    actual_bounds)
+            
+            asteroid_images.append(centered_surface)
                 
         return asteroid_images
     

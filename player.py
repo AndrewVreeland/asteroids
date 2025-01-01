@@ -13,7 +13,7 @@ class Player(CircleShape):
         # Load and set up the image
         self.original_image = pygame.image.load(resource_path("assets/ship.png")).convert_alpha()
         # Scale image to match your desired size
-        self.original_image = pygame.transform.scale(self.original_image, (PLAYER_RADIUS * 2, PLAYER_RADIUS * 2))
+        self.original_image = pygame.transform.scale(self.original_image, (PLAYER_SPRITE_SIZE, PLAYER_SPRITE_SIZE))
         self.image = self.original_image
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -46,6 +46,7 @@ class Player(CircleShape):
         # Update rect and draw
         self.rect = self.image.get_rect(center=self.position)
         screen.blit(self.image, self.rect)
+
 
     def rotate(self, dt):
         self.rotation += (PLAYER_TURN_SPEED * dt)

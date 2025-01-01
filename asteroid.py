@@ -30,6 +30,7 @@ class Asteroid(CircleShape):
         # Draw the sprite instead of a circle
         screen.blit(self.image, self.rect)
 
+
     def update(self, dt):
         self.position += ((self.velocity * dt))
 
