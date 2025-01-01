@@ -207,18 +207,24 @@ class GameManager:
         elif self.game_state == "GAMEOVER":
             screen.fill((0, 0, 0))  # Black background
 
+            self.play_again_button.draw(screen)
+            self.quit_button.draw(screen)
+
             # Center the "Game Over" title
             game_over_x = self.SCREEN_WIDTH/2 - self.game_over_title.get_width()/2
             screen.blit(self.game_over_title, (game_over_x, 200))
             
-            # Render and display "You Lose" centered below the title
-            you_lose_text = self.font.render('You Lose', True, (255, 255, 255))
-            you_lose_x = self.SCREEN_WIDTH/2 - you_lose_text.get_width()/2
-            screen.blit(you_lose_text, (you_lose_x, 300))
+            # Display current score
+            current_score = self.score_display.get_score()
+            current_score_text = self.font.render(f'Your Score: {current_score}', True, (255, 255, 255))
+            current_score_x = self.SCREEN_WIDTH/2 - current_score_text.get_width()/2
+            screen.blit(current_score_text, (current_score_x, 300))
 
+            # Dislpay High Score
             high_score_text = self.font.render(f'High Score: {read_high_score()}', True, (255, 255, 255))
             high_score_x = self.SCREEN_WIDTH/2 - high_score_text.get_width()/2
-            screen.blit(high_score_text, (high_score_x, 350))
+            screen.blit(high_score_text, (high_score_x, 400))
+
 
 
 
