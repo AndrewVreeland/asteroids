@@ -4,7 +4,7 @@ from circleshape import *
 from constants import *
 from shot import Shot
 from utils import resource_path
-
+from lives import Lives
 
 class Player(CircleShape):
 
@@ -18,11 +18,11 @@ class Player(CircleShape):
         self.image = self.original_image
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-
-        self.rotation = 0.0
+        self.screen_width, self.screen_height = game_manager.get_screen_dimensions()
+        self.lives_manager = Lives(3, self.screen_width)
         self.reload_timer = 0
         self.life_timer = 10
-        self.lives = 3
+        self.rotation = 0.0
         self.game_manager = game_manager
         self.audio_manager = audio_manager
         self.velocity = pygame.Vector2(0, 0)
@@ -123,27 +123,21 @@ class Player(CircleShape):
     
     def is_in_buffer_zone(self):
         buffer = 50  # Make sure this matches your GameManager's buffer
-        screen_width, screen_height = self.game_manager.get_screen_dimensions()
-
         return (self.position.x < 0 or 
-                self.position.x > screen_width or 
+                self.position.x > self.screen_width or 
                 self.position.y < 0 or 
-                self.position.y > screen_height)
+                self.position.y > self.screen_height)
 
     def lose_life(self, dt):
         
         # Only lose life if not in buffer zone
         if not self.is_in_buffer_zone():
             self.audio_manager.play_sound('explosion_1')
+            self.lives_manager.lose_life()
 
             if self.life_timer > 0:
-                self.lives -= 1
                 self.life_timer -= dt
-                screen_width, screen_height = self.game_manager.get_screen_dimensions()
-                self.position.xy = screen_width / 2, screen_height / 2
-                self.game_manager.clear_asteroids()
-            elif self.life_timer <= 0:
-                self.life_timer = 5
+                self.position.xy = self.screen_width / 2, self.screen_height / 2
 
         print(self.lives)
         if self.lives <= 0:
@@ -154,8 +148,7 @@ class Player(CircleShape):
     
     def reset_position_and_lives(self):
         # Reset the position to the center of the screen
-        screen_width, screen_height = self.game_manager.get_screen_dimensions()
-        self.position.xy = screen_width / 2, screen_height / 2
+        self.position.xy = self.screen_width / 2, self.screen_height / 2
         
         # Reset the number of lives
         self.lives = 3

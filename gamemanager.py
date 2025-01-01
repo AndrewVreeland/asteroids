@@ -156,6 +156,7 @@ class GameManager:
             for asteroid in self.asteroids:
                 if asteroid.collision_check(self.player):
                     self.player.lose_life(dt)
+                    
             
             # Update shots
             for shot in self.shots:
@@ -194,6 +195,9 @@ class GameManager:
             for object in self.drawable:
                 object.draw(screen)
         
+            # Draw the player's lives
+            self.player.lives_manager.draw(screen)
+
             # Update and draw score
             self.score_display.update_text()
             screen.blit(self.score_display.text, (35, 10))
