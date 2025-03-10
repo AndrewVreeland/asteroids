@@ -12,7 +12,7 @@ The message appears because the game isn't signed with a digital certificate, wh
 
 Windows Users:
 1. Extract all files
-2. Double-click YourGameName.exe to play
+2. Double-click spaceshooter.exe to play
 
 Linux Users:
 1. Extract all files
